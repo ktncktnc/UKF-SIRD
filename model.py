@@ -248,7 +248,7 @@ class SIRD:
         #Plot s
         s_plot = axes[0]
         s_plot.plot(days, self.predicted_s_values, "#0072bd", label = "Predicted S")
-        s_plot.bar(curdays, self.data_s_values[:self.curday], color = "#0072bd", alpha = 0.3)
+        s_plot.bar(days, self.data_s_values, color = "#0072bd", alpha = 0.3)
         s_plot.legend(loc='best')
 
         #Plot I, R
@@ -257,14 +257,14 @@ class SIRD:
         ir_plot.plot(days, self.predicted_r_values, "#edb120", label ="Predicted R")
 
 
-        ir_plot.bar(curdays, self.data_i_values[:self.curday], color= "#d95319",alpha = 0.3)
-        ir_plot.bar(curdays, self.data_r_values[:self.curday], color ="#edb120",alpha = 0.3)
+        ir_plot.bar(days, self.data_i_values, color= "#d95319",alpha = 0.3)
+        ir_plot.bar(days, self.data_r_values, color ="#edb120",alpha = 0.3)
         ir_plot.legend(loc='best')
 
         #Plot D
         d_plot = axes[2]
         d_plot.plot(days, self.predicted_d_values, "#7e2f8e", label ="Predicted D")
-        d_plot.bar(curdays, self.data_d_values[:self.curday], color ="#470854", alpha = 0.3)
+        d_plot.bar(days, self.data_d_values, color ="#470854", alpha = 0.3)
         d_plot.legend(loc='best')
 
         b_plot = axes[3]
