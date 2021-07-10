@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 import pandas as pd
+import datetime
 import requests
 from bs4 import BeautifulSoup
 from filterpy.kalman import UnscentedKalmanFilter, MerweScaledSigmaPoints
@@ -18,6 +19,10 @@ class SIRD:
         self.population_url = 'https://bit.ly/2WYjZCD'
 
         self.country = country
+
+        self.first_date = "2020-01-22"
+        self.last_date = None
+        self.predicted_last_date = None
 
         self.data = None
         self.population = None
@@ -215,6 +220,34 @@ class SIRD:
             self.predicted_gamma_values = np.append(self.predicted_gamma_values, self.gamma)
             self.predicted_mu_values = np.append(self.predicted_mu_values, self.mu)
 
+    def original_pred(self, nb_of_days = None):
+        max_days = self.data[:,1].shape[0]
+        if nb_of_days is None or nb_of_days > max_days or nb_of_days <= 0:
+            nb_of_days = max_days
+
+        for i in range(nb_of_days):
+            prev_s = self.predicted_s_value()
+            prev_i = self.predicted_i_value()
+
+            s = (1 - self.beta*prev_i/self.n)*prev_s
+            i = (1 - self.gamma + self.beta*prev_s/self.n)*prev_i - self.mu*prev_i
+            r = self.gamma*prev_i + self.predicted_r_value()
+            d = self.mu*prev_i + self.predicted_d_value()
+
+            self.x = np.array([i, r, d])
+            #print(self.x)
+
+            self.predicted_s_values = np.append(self.predicted_s_values, self.predicted_s_value())
+            self.predicted_i_values = np.append(self.predicted_i_values, self.predicted_i_value())
+            self.predicted_r_values = np.append(self.predicted_r_values, self.predicted_r_value())
+            self.predicted_d_values = np.append(self.predicted_d_values, self.predicted_d_value())
+
+            self.predicted_beta_values = np.append(self.predicted_beta_values, self.beta)
+            self.predicted_gamma_values = np.append(self.predicted_gamma_values, self.gamma)
+            self.predicted_mu_values = np.append(self.predicted_mu_values, self.mu)
+
+
+
     def pred(self, nb_of_days = 60):
         for i in range(nb_of_days):
             self.ukf.predict(model_self=self)
@@ -277,4 +310,35 @@ class SIRD:
         bgm_plot.legend(loc='best')
 
         plt.xlabel('time (day)')
+        plt.show()
+
+    def plot_ir(self,figsize = (13,9)):
+        plt.rcParams["figure.figsize"] = figsize
+        maxDays = self.data[:,1].shape[0]
+        days = range(self.predicted_i_values.size)
+        print("Current day = " + str(days))
+
+
+        plt.plot(days, self.predicted_i_values, "#0072bd", label = "Predicted I")
+        plt.bar(maxDays, self.data_i_values[:maxDays], color = "#0072bd", alpha = 0.3)
+
+        plt.plot(days, self.predicted_r_values, "#edb120", label ="Predicted R")
+        plt.bar(maxDays, self.data_r_values[:maxDays], color ="#edb120",alpha = 0.3)
+
+        plt.legend(loc='best')
+        
+        plt.show()
+
+    def plot_d(self,figsize = (13,9)):
+
+        plt.rcParams["figure.figsize"] = figsize
+        maxDays = self.data[:,1].shape[0]
+        days = range(self.predicted_i_values.size)
+        print("Current day = " + str(days))
+
+
+        plt.plot(days, self.predicted_d_values, "#7e2f8e", label ="Predicted D")
+        plt.bar(days, self.data_d_values, color ="#470854", alpha = 0.3)
+
+        plt.legend(loc='best')
         plt.show()
