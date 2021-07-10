@@ -279,14 +279,14 @@ class UKFSIRD:
 
         #Plot s
         s_plot = axes[0]
-        s_plot.plot(days, self.predicted_s_values[:days], "#0072bd", label = "Predicted S")
+        s_plot.plot(days, self.predicted_s_values[:self.predicted_s_values.size], "#0072bd", label = "Predicted S")
         s_plot.bar(days, self.data_s_values, color = "#0072bd", alpha = 0.3)
         s_plot.legend(loc='best')
 
         #Plot I, R
         ir_plot = axes[1]
-        ir_plot.plot(days, self.predicted_i_values[:days], "#d95319", label ="Predicted I")
-        ir_plot.plot(days, self.predicted_r_values[:days], "#edb120", label ="Predicted R")
+        ir_plot.plot(days, self.predicted_i_values[:self.predicted_s_values.size], "#d95319", label ="Predicted I")
+        ir_plot.plot(days, self.predicted_r_values[:self.predicted_s_values.size], "#edb120", label ="Predicted R")
 
 
         ir_plot.bar(days, self.data_i_values, color= "#d95319",alpha = 0.3)
@@ -295,17 +295,17 @@ class UKFSIRD:
 
         #Plot D
         d_plot = axes[2]
-        d_plot.plot(days, self.predicted_d_values[:days], "#7e2f8e", label ="Predicted D")
+        d_plot.plot(days, self.predicted_d_values[:self.predicted_s_values.size], "#7e2f8e", label ="Predicted D")
         d_plot.bar(days, self.data_d_values, color ="#470854", alpha = 0.3)
         d_plot.legend(loc='best')
 
         b_plot = axes[3]
-        b_plot.plot(days, self.predicted_beta_values[:days], "#77ac30", label = "Beta")
+        b_plot.plot(days, self.predicted_beta_values[:self.predicted_s_values.size], "#77ac30", label = "Beta")
         b_plot.legend(loc='best')
 
         bgm_plot = axes[4]
-        bgm_plot.plot(days, self.predicted_gamma_values[:days], "#4dbeee", label = "Gamma")
-        bgm_plot.plot(days, self.predicted_mu_values[:days], "#a2142f", label = "Mu")
+        bgm_plot.plot(days, self.predicted_gamma_values[:self.predicted_s_values.size], "#4dbeee", label = "Gamma")
+        bgm_plot.plot(days, self.predicted_mu_values[:self.predicted_s_values.size], "#a2142f", label = "Mu")
         bgm_plot.legend(loc='best')
 
         plt.xlabel('time (day)')
