@@ -96,12 +96,12 @@ class UKFSIRD:
         if data.shape[0] == 0:
             sys.exit('Error: no Covid-19 data is available for {}.'.format(country))
 
-        data = data.drop(data.columns[list(range(SIRD.skip_empty_columns))], axis=1)  # Skip non-data columns.
+        data = data.drop(data.columns[list(range(UKFSIRD.skip_empty_columns))], axis=1)  # Skip non-data columns.
         start = None
 
         for i in range(data.shape[1]):
             if data.iloc[0][i] != 0:
-                start = SIRD.skip_empty_columns + i
+                start = UKFSIRD.skip_empty_columns + i
 
                 break
 
@@ -161,7 +161,7 @@ class UKFSIRD:
     #Mesured variables
     @staticmethod
     def h(x):
-        return x[:SIRD.measured_count]
+        return x[:UKFSIRD.measured_count]
 
     def reset(self):
 
@@ -172,8 +172,8 @@ class UKFSIRD:
         self.x = np.array([self.i_at_day(0), self.r_at_day(0), self.d_at_day(0)])
         self.n = self.population
 
-        points = MerweScaledSigmaPoints(SIRD.variable_count, 1e-3, 2, 0)
-        self.ukf = UnscentedKalmanFilter(SIRD.variable_count, SIRD.measured_count, 1, self.h, self.f, points)
+        points = MerweScaledSigmaPoints(UKFSIRD.variable_count, 1e-3, 2, 0)
+        self.ukf = UnscentedKalmanFilter(UKFSIRD.variable_count, UKFSIRD.measured_count, 1, self.h, self.f, points)
         self.ukf.x = np.array([self.i_at_day(0), self.r_at_day(0), self.d_at_day(0), self.beta, self.gamma, self.mu, self.n])
 
         self.data_s_values = np.array([self.s_at_day(0)])
