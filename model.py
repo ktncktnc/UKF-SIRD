@@ -8,7 +8,7 @@ from filterpy.kalman import UnscentedKalmanFilter, MerweScaledSigmaPoints
 import matplotlib.pyplot as plt
 
 
-class SIRD:
+class UKFSIRD:
     skip_empty_columns = 4
     variable_count = 7 # Number of state variables to filter (I, R, D, β, γ, μ and n, the population).
     measured_count = 3 # Number of measured variables (I, R and D).
