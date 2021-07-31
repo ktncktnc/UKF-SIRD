@@ -275,12 +275,13 @@ class UKFSIRD:
 
     def plot(self):
         days = range(self.predicted_s_values.size)
+        days_size = self.predicted_s_values.size
         figure, axes = plt.subplots(5, 1, figsize=(11,17))
 
         #Plot s
         s_plot = axes[0]
         s_plot.plot(days, self.predicted_s_values[:self.predicted_s_values.size], "#0072bd", label = "Predicted S")
-        s_plot.bar(days, self.data_s_values, color = "#0072bd", alpha = 0.3)
+        s_plot.bar(days, self.data_s_values[:days_size], color = "#0072bd", alpha = 0.3)
         s_plot.legend(loc='best')
 
         #Plot I, R
@@ -289,14 +290,14 @@ class UKFSIRD:
         ir_plot.plot(days, self.predicted_r_values[:self.predicted_s_values.size], "#edb120", label ="Predicted R")
 
 
-        ir_plot.bar(days, self.data_i_values, color= "#d95319",alpha = 0.3)
-        ir_plot.bar(days, self.data_r_values, color ="#edb120",alpha = 0.3)
+        ir_plot.bar(days, self.data_i_values[:days_size], color= "#d95319",alpha = 0.3)
+        ir_plot.bar(days, self.data_r_values[:days_size], color ="#edb120",alpha = 0.3)
         ir_plot.legend(loc='best')
 
         #Plot D
         d_plot = axes[2]
         d_plot.plot(days, self.predicted_d_values[:self.predicted_s_values.size], "#7e2f8e", label ="Predicted D")
-        d_plot.bar(days, self.data_d_values, color ="#470854", alpha = 0.3)
+        d_plot.bar(days, self.data_d_values[:days_size], color ="#470854", alpha = 0.3)
         d_plot.legend(loc='best')
 
         b_plot = axes[3]
